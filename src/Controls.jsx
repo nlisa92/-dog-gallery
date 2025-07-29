@@ -7,7 +7,16 @@ const Controls = ({
   breedsList,
 }) => {
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "start",
+        gap: "16px",
+        flexWrap: "wrap",
+        marginBottom: "16px",
+      }}
+    >
       <label>
         Порода:{" "}
         <select value={breed} onChange={(e) => setBreed(e.target.value)}>
@@ -21,7 +30,7 @@ const Controls = ({
       </label>
 
       <label>
-        Кол-во собак (1–50):{" "}
+        Показать:{" "}
         <input
           type="number"
           value={dogCount}
@@ -31,7 +40,19 @@ const Controls = ({
         />
       </label>
 
-      <button onClick={fetchDogs}>Обновить</button>
+      <button
+        style={{
+          backgroundColor: "#0078d7",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px",
+          fontSize: "14px",
+          cursor: "pointer",
+        }}
+        onClick={fetchDogs}
+      >
+        Обновить
+      </button>
     </div>
   );
 };

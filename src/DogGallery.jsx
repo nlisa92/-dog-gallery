@@ -8,7 +8,12 @@ const DogGallery = ({ images }) => {
       }}
     >
       {images.map((src) => (
-        <img key={src} src={src} alt={`Собака`} style={{ width: "100%" }} />
+        <img
+          key={src}
+          src={src}
+          alt={`Собака`}
+          style={{ width: "100%", borderRadius: "2px" }}
+        />
       ))}
     </div>
   );

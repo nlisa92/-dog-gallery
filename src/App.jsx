@@ -11,30 +11,33 @@ const App = () => {
   const [breed, setBreed] = useState("all");
   const [breedsList, setBreedsList] = useState([]);
 
-  const fetchDogs = useCallback(async (count, isUserTriggered = false) => {
-    setIsLoading(true);
-    try {
-      const breedPath =
-        breed === "all"
-          ? `https://dog.ceo/api/breeds/image/random/${count}`
-          : `https://dog.ceo/api/breed/${breed}/images/random/${count}`;
+  const fetchDogs = useCallback(
+    async (count, isUserTriggered = false) => {
+      setIsLoading(true);
+      try {
+        const breedPath =
+          breed === "all"
+            ? `https://dog.ceo/api/breeds/image/random/${count}`
+            : `https://dog.ceo/api/breed/${breed}/images/random/${count}`;
 
-      const res = await fetch(breedPath);
-      const data = await res.json();
-      setDogImages(data.message);
-      if (isUserTriggered) {
-        setUpdateCount((prev) => prev + 1);
+        const res = await fetch(breedPath);
+        const data = await res.json();
+        setDogImages(data.message);
+        if (isUserTriggered) {
+          setUpdateCount((prev) => prev + 1);
+        }
+      } catch (err) {
+        console.error("Ошибка загрузки собак:", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Ошибка загрузки собак:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [breed]);
+    },
+    [breed]
+  );
 
   useEffect(() => {
     fetchDogs(dogCount, false);
-  }, [breed, dogCount, fetchDogs]);
+  }, [breed, fetchDogs]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -50,8 +53,24 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Галерея собак</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "start",
+        padding: "40px",
+        fontSize: "14px",
+      }}
+    >
+      <h2
+        style={{
+          margin: "0",
+        }}
+      >
+        Галерея собак
+      </h2>
+      <p>Картинки обновлены {updateCount} раз(а)</p>
       <Controls
         dogCount={dogCount}
         setDogCount={setDogCount}
@@ -60,7 +79,6 @@ const App = () => {
         setBreed={setBreed}
         breedsList={breedsList}
       />
-      <p>Картинки обновлены {updateCount} раз.</p>
       {isLoading ? <Loader /> : <DogGallery images={dogImages} />}
     </div>
   );
